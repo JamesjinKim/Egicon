@@ -1,0 +1,7 @@
+shinho@shinhotech:~/Egicon $ python sdp810_sensor.py
+Traceback (most recent call last):
+  File "/home/shinho/Egicon/sdp810_sensor.py", line 9, in <module>
+    from sdp810_sensor import SDP810Sensor
+  File "/home/shinho/Egicon/sdp810_sensor.py", line 9, in <module>
+    from sdp810_sensor import SDP810Sensor
+ImportError: cannot import name 'SDP810Sensor' from partially initialized module 'sdp810_sensor' (most likely due to a circular import) (/home/shinho/Egicon/sdp810_sensor.py)
