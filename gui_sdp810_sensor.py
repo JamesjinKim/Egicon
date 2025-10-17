@@ -173,8 +173,8 @@ def scan_i2c_bus():
 
 class SDP810Monitor:
     def __init__(self):
-        # 데이터 저장용 deque (최대 60개 데이터 포인트)
-        self.max_points = 60
+        # 데이터 저장용 deque (최대 480개 데이터 포인트: 0.5초 간격으로 4분)
+        self.max_points = 480
         self.timestamps = deque(maxlen=self.max_points)
         self.pressure_data = deque(maxlen=self.max_points)
         
@@ -371,13 +371,13 @@ class SDP810Monitor:
         self.ax = self.fig.add_subplot(111, facecolor='#2E3440')
         
         # 차트 스타일링
-        self.ax.set_xlabel('시간', color='#D8DEE9', fontsize=9)
-        self.ax.set_ylabel('차압 (Pa)', color='#D8DEE9', fontsize=9)
+        self.ax.set_xlabel('Time', color='#D8DEE9', fontsize=9)
+        self.ax.set_ylabel('Pressure(Pa)', color='#D8DEE9', fontsize=9)
         self.ax.tick_params(colors='#D8DEE9', labelsize=8)
         self.ax.grid(True, alpha=0.3, color='#4C566A')
         
         # 차압 라인
-        self.pressure_line, = self.ax.plot([], [], '-', color='#2D5BFF', label='차압 (Pa)', linewidth=2)
+        self.pressure_line, = self.ax.plot([], [], '-', color='#2D5BFF', label='Pressure(Pa)', linewidth=2)
         
         # 0 기준선
         self.ax.axhline(y=0, color='#E63946', linestyle='--', linewidth=1, alpha=0.5)
@@ -395,7 +395,7 @@ class SDP810Monitor:
     def setup_chart(self):
         """차트 초기 설정"""
         now = datetime.now()
-        self.ax.set_xlim(now - timedelta(minutes=5), now)
+        self.ax.set_xlim(now - timedelta(minutes=4), now)
         self.ax.set_ylim(-50, 50)
         
         # 시간 축 포맷
@@ -615,7 +615,7 @@ class SDP810Monitor:
                     self.root.after(0, self.stop_monitoring)
                     break
 
-                time.sleep(1)  # 1초 간격
+                time.sleep(0.5)  # 0.5초 간격
             
             self.sensor.close()
             self.log_message("센서 연결 종료")
@@ -696,7 +696,7 @@ class SDP810Monitor:
             
             # 축 범위 조정
             now = datetime.now()
-            self.ax.set_xlim(now - timedelta(minutes=5), now)
+            self.ax.set_xlim(now - timedelta(minutes=4), now)
             
             # Y축 범위 자동 조정
             if self.pressure_data:
